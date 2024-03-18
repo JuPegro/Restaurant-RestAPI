@@ -13,13 +13,10 @@ Content-Type: application/json
 }
 
 ###
-GET {{api}}/1002
+GET {{api}}/123
 
 ###
 DELETE {{api}}/1003
-
-###
-GET {{api}}/count
 
 ###
 PUT {{api}}/1002

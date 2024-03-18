@@ -1,11 +1,12 @@
 import { getConnection, sql } from "../database/connection.js ";
 import querys from "../database/querys.js";
 
+
 export const getBoards = async (req, res, next) => {
   try {
     const pool = await getConnection();
     const result = await pool.request().query(querys.getAllBoards);
-    res.json(result.recordset);
+    res.json(result);
   } catch (error) {
     res.status(500);
     res.send(error.message);
@@ -51,25 +52,19 @@ export const getBoardById = async (req, res, next) => {
       .request()
       .input("Id", Id)
       .query(querys.getBoardById);
-    console.log(result);
+    console.log(result.recordset);
 
-    res.send(result.recordset[0]);
+    if (result.recordset.length === 0) {
+      res.sendStatus(404);
+    } else {
+      res.send(result.recordset[0]);
+    }
   } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
 
-export const getTotalCount = async (req, res, next) => {
-  try {
-    const pool = await getConnection();
-    const result = await pool.request().query(querys.getTotalBoards);
-    res.json(result.recordset[0]);
-  } catch (error) {
-    console.error("Error fetching total count:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 
 export const deleteBoardById = async (req, res, next) => {
   const { Id } = req.params;
@@ -108,8 +103,8 @@ export const updateBoardById = async (req, res, next) => {
       .input("Description", sql.VarChar, Description)
       .input("Status", sql.VarChar, Status)
       .query(querys.updateBoardById);
-  
-      res.json({Quantity, Description, Status})
+
+    res.json({ Quantity, Description, Status });
   } catch (error) {
     console.error("Error fetching total count:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
