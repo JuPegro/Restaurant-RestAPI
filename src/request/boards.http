@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{api}}/123
+GET {{api}}/1006
 
 ###
 DELETE {{api}}/1003
@@ -26,4 +26,12 @@ Content-Type: application/json
     "Quantity": 134,
     "Description": "OLD TIME",
     "Status": "Sucess"
+}
+
+###
+PUT {{api}}/change-status/1006
+Content-Type: application/json
+
+{
+    "Status": "Avaliable"
 }

@@ -14,7 +14,7 @@ const options = {
       },
       license: {
         name: "MIT",
-        url: "https://www.apache.org/licenses/LICENSE-2.0.html",
+        url: "https://github.com/JuPegro/Restaurant-RestAPI?tab=MIT-1-ov-file",
       },
     },
     servers: [

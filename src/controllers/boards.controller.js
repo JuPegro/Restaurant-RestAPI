@@ -1,7 +1,6 @@
 import { getConnection, sql } from "../database/connection.js ";
 import querys from "../database/querys.js";
 
-
 export const getBoards = async (req, res, next) => {
   try {
     const pool = await getConnection();
@@ -65,7 +64,6 @@ export const getBoardById = async (req, res, next) => {
   }
 };
 
-
 export const deleteBoardById = async (req, res, next) => {
   const { Id } = req.params;
 
@@ -96,7 +94,7 @@ export const updateBoardById = async (req, res, next) => {
 
   try {
     const pool = await getConnection();
-    pool
+    await pool
       .request()
       .input("Id", sql.Int, Id)
       .input("Quantity", sql.Int, Quantity)
@@ -106,7 +104,28 @@ export const updateBoardById = async (req, res, next) => {
 
     res.json({ Quantity, Description, Status });
   } catch (error) {
-    console.error("Error fetching total count:", error.message);
+    console.error("Error fetching:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const changeStatusBoard = async (req, res, next) => {
+  const { Id } = req.params;
+  const { Status } = req.body;
+
+  if (Status == null) {
+    res.status(400).json({ message: "Bad Request. Please Fill Status" });
+  }
+
+  try {
+    const pool = await getConnection();
+    await pool.request()
+      .input("Id", sql.Int, Id)
+      .input("Status", sql.VarChar, Status).query(querys.changeStatusBoard)
+
+      res.json({Id, Status})
+  } catch (error) {
+    console.error("Error fetching:", error.message);
+    res.status(500).json({ error: "Internal Server Error"});
   }
 };
